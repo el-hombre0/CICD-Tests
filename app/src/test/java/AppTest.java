@@ -9,20 +9,19 @@ GET /users/{id}
 
 Для тестов настроить автоматический прогон и формирование отчетов на удаленной машине.
 */
-package dz4_;
 
-import org.junit.Assert;
-import org.junit.Test;
 
-import dz4_.api.Register;
-import dz4_.api.Specifications;
-import dz4_.api.SuccessReg;
-import dz4_.api.UnsuccessReg;
-import dz4_.api.UserData;
-import dz4_.api.UserUpdateDateRequest;
-import dz4_.api.UserUpdateRequest;
-import dz4_.api.UserUpdateResponse;
+import org.junit.jupiter.api.*;
+
 import io.restassured.RestAssured;
+import ru.evendot.api.Register;
+import ru.evendot.api.Specifications;
+import ru.evendot.api.SuccessReg;
+import ru.evendot.api.UnsuccessReg;
+import ru.evendot.api.UserData;
+import ru.evendot.api.UserUpdateDateRequest;
+import ru.evendot.api.UserUpdateRequest;
+import ru.evendot.api.UserUpdateResponse;
 
 import static io.restassured.RestAssured.given;
 
@@ -46,14 +45,14 @@ public class AppTest {
                                 .extract().body().jsonPath().getObject("data", UserData.class);
 
                 // Проверка модели ответа
-                Assert.assertNotNull(user.getId());
-                Assert.assertNotNull(user.getEmail());
-                Assert.assertNotNull(user.getFirst_name());
-                Assert.assertNotNull(user.getLast_name());
-                Assert.assertNotNull(user.getAvatar());
+                Assertions.assertNotNull(user.getId());
+                Assertions.assertNotNull(user.getEmail());
+                Assertions.assertNotNull(user.getFirst_name());
+                Assertions.assertNotNull(user.getLast_name());
+                Assertions.assertNotNull(user.getAvatar());
 
                 // Проверка бизнес-модели
-                Assert.assertTrue(user.getAvatar().contains(user.getId().toString()));
+                Assertions.assertTrue(user.getAvatar().contains(user.getId().toString()));
         }
 
         /**
@@ -90,11 +89,11 @@ public class AppTest {
                                 .then().log().all()
                                 .extract().as(SuccessReg.class);
 
-                Assert.assertNotNull(successReg.getId());
-                Assert.assertNotNull(successReg.getToken());
+                Assertions.assertNotNull(successReg.getId());
+                Assertions.assertNotNull(successReg.getToken());
 
-                Assert.assertEquals(id, successReg.getId());
-                Assert.assertEquals(token, successReg.getToken());
+                Assertions.assertEquals(id, successReg.getId());
+                Assertions.assertEquals(token, successReg.getToken());
 
         }
 
@@ -113,8 +112,8 @@ public class AppTest {
                                 .then().log().all()
                                 .extract().as(UnsuccessReg.class);
 
-                Assert.assertNotNull(unsuccessReg.getError());
-                Assert.assertEquals("Missing password", unsuccessReg.getError());
+                Assertions.assertNotNull(unsuccessReg.getError());
+                Assertions.assertEquals("Missing password", unsuccessReg.getError());
 
         }
 
@@ -161,11 +160,11 @@ public class AppTest {
 
                 String currentTime = Clock.systemUTC().instant().toString().replaceAll(currentTimeRegex, "");
 
-                Assert.assertNotNull(response.getJob());
-                Assert.assertNotNull(response.getName());
-                Assert.assertNotNull(response.getUpdatedAt());
+                Assertions.assertNotNull(response.getJob());
+                Assertions.assertNotNull(response.getName());
+                Assertions.assertNotNull(response.getUpdatedAt());
 
-                Assert.assertEquals(currentTime, response.getUpdatedAt().replaceAll(regex, ""));
+                Assertions.assertEquals(currentTime, response.getUpdatedAt().replaceAll(regex, ""));
         }
 
         /**
@@ -186,11 +185,11 @@ public class AppTest {
 
                 String currentTime = Clock.systemUTC().instant().toString().replaceAll(currentTimeRegex, "");
 
-                Assert.assertNotNull(response.getJob());
-                Assert.assertNotNull(response.getName());
-                Assert.assertNotNull(response.getUpdatedAt());
+                Assertions.assertNotNull(response.getJob());
+                Assertions.assertNotNull(response.getName());
+                Assertions.assertNotNull(response.getUpdatedAt());
 
-                Assert.assertEquals(currentTime, response.getUpdatedAt().replaceAll(regex, ""));
+                Assertions.assertEquals(currentTime, response.getUpdatedAt().replaceAll(regex, ""));
         }
 
 }

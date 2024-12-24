@@ -8,7 +8,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
-    id("io.qameta.allure") version "2.12.0"
+    id('io.qameta.allure') version '2.12.0'
 
 }
 
@@ -21,13 +21,16 @@ dependencies {
     // Use JUnit Jupiter for testing.
     testImplementation libs.junit.jupiter
 
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.junit.platform:junit-platform-launcher'
 
     // This dependency is used by the application.
     implementation libs.guava
     // https://mvnrepository.com/artifact/io.rest-assured/rest-assured
     implementation 'io.rest-assured:rest-assured:5.5.0'
-    implementation 'junit:junit:4.13.2'
+    // https://mvnrepository.com/artifact/junit/junit
+    // testImplementation group: 'junit', name: 'junit', version: '4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
     implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.36'
 
@@ -57,19 +60,10 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'dz4_.App'
+    mainClass = 'ru.evendot.Main'
 }
-// sourceSets {
-//     test {
-//         java {
-//             srcDirs = ["test/java/dz4_"]  
-//         }
-//     }
-// }
-tasks.named('test') {
+
+tasks.named('test', Test) {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
-// test {
-//     useJUnitPlatform()
-// }

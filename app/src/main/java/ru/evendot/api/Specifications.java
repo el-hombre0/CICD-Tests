@@ -1,4 +1,4 @@
-package dz4_.api;
+package ru.evendot.api;
 
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;

@@ -1,4 +1,4 @@
-package dz4_.api;
+package ru.evendot.api;
 
 public class UserUpdateDateRequest {
     private String name;
