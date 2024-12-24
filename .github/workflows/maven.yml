@@ -1,31 +1,40 @@
-name: MTS QA Homework4
-
-on:
-  push
-
+name: Run tests and publish report
+on: [push]
 jobs:
-  run_tests:
+  test:
     runs-on: ubuntu-latest
-
     steps:
-      - name: "Использование main-репозитория"
-        uses: actions/checkout/@v3
-      - name: "Запуск тестов"
-        run: gradle clean test
-        continue-on-error: true
-      - name: "Генерация allure report"
-        uses: simple-elf/allure-report-action@master
-        id: allure-report
-        with: 
-          allure_results: target/allure-results
-          gh_pages: gh-pages
-          allure_report: target/allure-report
-          allure_history: target/allure-history
+      - uses: actions/checkout@v3
 
-      - name: "Создание ветки gh-pages, содержащей allure-report"
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
         with:
-          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: target/allure-history
+          distribution: zulu
+          java-version: 17
+
+      - name: Run tests
+        run: ./gradlew clean test
+
+      - name: Load test report history
+        uses: actions/checkout@v3
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Build test report
+        uses: simple-elf/allure-report-action@v1.7
+        if: always()
+        with:
+          gh_pages: gh-pages
+          allure_history: allure-history
+          allure_results: build/allure-results
+
+      - name: Publish test report
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
