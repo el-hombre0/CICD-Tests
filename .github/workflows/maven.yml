@@ -5,11 +5,11 @@ on:
 
 jobs:
   run_tests:
-    runs-on: ubuntu_latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: "Использование main-репозитория"
-        uses: actions/checkout/@3
+        uses: actions/checkout/@v3
       - name: "Запуск тестов"
         run: gradle clean test
         continue-on-error: true
